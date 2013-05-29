@@ -40,7 +40,7 @@ var Laboratory = function() {
 
 			// Camera
 			this.camera = new THREE.PerspectiveCamera( 45, this.wndw.width / this.wndw.height, 1, 10000 );
-			this.camera.position.z = 20;
+			this.camera.position.z = 1000;
 
 			// Scene
 			this.scene = new THREE.Scene();
@@ -52,7 +52,7 @@ var Laboratory = function() {
 			this.scene.add( ambient );
 
 			var light = new THREE.DirectionalLight( 0xffeedd );
-			light.position.set( 0, 0, 1 ).normalize();
+			light.position.set( 10, 10, 10 ).normalize();
 			this.scene.add( light );
 
 			// Renderer
@@ -66,17 +66,17 @@ var Laboratory = function() {
 			this.container.appendChild( this.stats.domElement );
 
 			// Texture
-			this.textures.will = new THREE.Texture();
+			this.textures.Head = new THREE.Texture();
 			// Image Loader
 			var iloader = new THREE.ImageLoader();
-			iloader.name = 'will';
+			iloader.name = 'Head';
 			iloader.addEventListener( 'load', this.onImageLoadComplete);
-			iloader.load('assets/img/image.png');
+			iloader.load('assets/models/minecraft/headmaterial.png');
 
 			// Object Loader
 			var loader = new THREE.OBJLoader();
 			loader.addEventListener('load', this.onModelLoadComplete);
-			loader.load("assets/models/will.obj");
+			loader.load("assets/models/minecraft/body.obj");
 
 			$(document).bind('mousemove', this.onMouseMove);
 			$(document).bind('mousedown', this.onMouseDown);
@@ -154,14 +154,16 @@ var Laboratory = function() {
 		{
 			var object = event.content;
 			var that = this;
+			
 			object.traverse( function ( child ) {
+				
 				if(child instanceof THREE.Mesh && that.textures[child.name])
 				{
 					child.material.map = that.textures[child.name];
 				}
 			});
-
-			//object.position.y = - 80;
+			
+			object.position.y = - 80;
 			this.scene.add( object );
 		},
 
@@ -173,8 +175,8 @@ var Laboratory = function() {
 		},
 
 		onMouseMove: function(event) {
-			this.mouse.x = this.clamp(-25, 25, ( event.clientX - this.wndw.centerX ));
-			this.mouse.y = this.clamp(-25, 25, ( event.clientY - this.wndw.centerY ));
+			this.mouse.x = this.clamp(-1000, 1000, ( event.clientX - this.wndw.centerX ));
+			this.mouse.y = this.clamp(-1000, 1000, ( event.clientY - this.wndw.centerY ));
 		},
 
 		onMouseDown: function(event) {
